@@ -1,14 +1,25 @@
-
-import * as bcrypt from 'bcrypt';
+import { hash, compare } from 'bcrypt';
 
 export const hashPassword = async (password: string): Promise<string> => {
-
-  return bcrypt.hash(password, 10);
+  try {
+    const result = await hash(password, 10);
+    if (!result) {
+      return result;
+    } else {
+      throw new Error('Failed to hash password');
+    }
+  } catch (error) {
+    throw new Error('Failed to hash password', error );
+  }
 };
 
 export const verifyPassword = async (
-  plainPassword: string, adminpassword : string
-  // hashedPassword: string,
+  plainPassword: string,
+  hashedPassword: string,
 ): Promise<boolean> => {
-  return bcrypt.compare(plainPassword, adminpassword);
+  try {
+    return await compare(plainPassword, hashedPassword);
+  } catch (error) {
+    throw new Error('Failed to verify password',error);
+  }
 };

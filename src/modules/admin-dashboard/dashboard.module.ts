@@ -5,11 +5,8 @@ import { AdminModule } from 'src/modules/admin-auth/admin.module';
 import { DashboardService } from './dashboard.service';
 import { UserModule } from '../admin-users/user.module';
 
-
 @Module({
-    imports:[ UserModule ,
-    ProductModule,AdminModule
-  ],
+  imports: [UserModule, ProductModule, AdminModule],
   controllers: [DashboardController],
   providers: [DashboardService],
 })

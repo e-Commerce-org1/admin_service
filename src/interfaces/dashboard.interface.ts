@@ -1,5 +1,3 @@
-
-
 export interface DashboardStats {
   totalOrders: number;
   totalProducts: number;

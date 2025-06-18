@@ -1,4 +1,3 @@
-
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
@@ -11,18 +10,21 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { UserModule } from './modules/admin-users/user.module';
 import { DashboardModule } from './modules/admin-dashboard/dashboard.module';
 
-
-
 @Module({
   imports: [
-
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env']
+      envFilePath: ['.env'],
     }),
-     CloudinaryModule,
+    CloudinaryModule,
     MongooseModule.forRoot(process.env.MONGO_URI as string),
-    AdminModule, DashboardModule, UserModule, ProductModule, AuthGrpcClientModule, ProductGrpcClientModule,OrderModule
+    AdminModule,
+    DashboardModule,
+    UserModule,
+    ProductModule,
+    AuthGrpcClientModule,
+    ProductGrpcClientModule,
+    OrderModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

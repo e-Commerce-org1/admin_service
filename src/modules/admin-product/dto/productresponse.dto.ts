@@ -1,6 +1,3 @@
-
-
-
 import { ApiProperty } from '@nestjs/swagger';
 import { VariantResponseDto } from './variant-response.dto';
 

@@ -1,9 +1,11 @@
-
-
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { AdminService } from '../modules/admin-auth/admin.service';
-
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -12,16 +14,16 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
     const token = this.extractTokenFromHeader(request);
-    
+
     if (!token) {
       throw new UnauthorizedException('Missing access token');
     }
 
     try {
       const { isValid } = await this.adminService.validateToken(token);
-      return isValid; 
+      return isValid;
     } catch (error) {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException('Invalid token', error);
     }
   }
 

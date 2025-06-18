@@ -1,10 +1,25 @@
-import { Controller, Post, Body, UseGuards, HttpCode, HttpStatus, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { SignupAdminDto } from './dto/signup-admin.dto';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { LoginResponses } from '../../interfaces/auth.interface';
 import { ChangePasswordDto } from './dto/changepassword.dto';
 import { AdminDocument } from '../../schema/admin.schema';
@@ -18,23 +33,17 @@ import { LoginResponseDto } from './dto/login-response.dto';
 @ApiBearerAuth()
 @Controller('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) { }
-
+  constructor(private readonly adminService: AdminService) {}
 
   @Post('signup')
   async signup(@Body() signupAdminDto: SignupAdminDto) {
-    try {
-      const result = await this.adminService.signup(signupAdminDto);
-      return {
-        success: true,
-        message: 'Admin registered successfully',
-        data: result
-      };
-    } catch (error) {
-      throw error;
-    }
+    const result = await this.adminService.signup(signupAdminDto);
+    return {
+      success: true,
+      message: 'Admin registered successfully',
+      data: result,
+    };
   }
-
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -43,16 +52,15 @@ export class AdminController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Admin logged in successfully',
-    type: LoginResponseDto
+    type: LoginResponseDto,
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
-    description: 'Invalid credentials'
+    description: 'Invalid credentials',
   })
   async login(@Body() loginAdminDto: LoginAdminDto): Promise<LoginResponses> {
     return await this.adminService.login(loginAdminDto);
   }
-
 
   @UseGuards(AuthGuard)
   @Post('change-password')
@@ -60,7 +68,7 @@ export class AdminController {
   @ApiOperation({ summary: 'Admin change password' })
   @ApiBody({
     type: ChangePasswordDto,
-    description: 'Current password and new password'
+    description: 'Current password and new password',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -69,9 +77,9 @@ export class AdminController {
       example: {
         success: true,
         message: 'Password changed successfully',
-        data: null
-      }
-    }
+        data: null,
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
@@ -80,9 +88,9 @@ export class AdminController {
       example: {
         statusCode: 401,
         message: 'Current password is incorrect',
-        error: 'Unauthorized'
-      }
-    }
+        error: 'Unauthorized',
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
@@ -90,68 +98,70 @@ export class AdminController {
     schema: {
       example: {
         statusCode: 400,
-        message: ['currentPassword must be a string', 'newPassword must be a string'],
-        error: 'Bad Request'
-      }
-    }
+        message: [
+          'currentPassword must be a string',
+          'newPassword must be a string',
+        ],
+        error: 'Bad Request',
+      },
+    },
   })
   async changePassword(
     admin: AdminDocument,
-    @Body() changePasswordDto: ChangePasswordDto
+    @Body() changePasswordDto: ChangePasswordDto,
   ) {
-    try {
-      const result = await this.adminService.changePassword(admin, changePasswordDto);
-      return {
-        success: true,
-        message: result.message,
-        data: result
-      }
-    } catch (error) {
-      throw error;
-    }
+    const result = await this.adminService.changePassword(
+      admin,
+      changePasswordDto,
+    );
+    return {
+      success: true,
+      message: result.message,
+      data: result,
+    };
   }
-
 
   @Post('forgot-password')
   @ApiOperation({
     summary: 'Admin forgot password',
-    description: 'Send reset password OTP to admin email'
+    description: 'Send reset password OTP to admin email',
   })
   @ApiBody({ type: ForgotPasswordDto })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'If this email exists, OTP has been sent'
+    description: 'If this email exists, OTP has been sent',
   })
   async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return await this.adminService.forgotPassword(forgotPasswordDto);
   }
 
-
   @Post('reset-password')
   @ApiOperation({
     summary: 'Reset password with OTP',
-    description: 'Verify OTP and set new password. '
+    description: 'Verify OTP and set new password. ',
   })
   @ApiBody({ type: ResetPasswordDto })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Password reset successful',
     schema: {
-      example: { message: 'Password successfully reset' }
-    }
+      example: { message: 'Password successfully reset' },
+    },
   })
   @ApiResponse({
     status: 401,
-    description: 'Invalid OTP or expired'
+    description: 'Invalid OTP or expired',
   })
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     return await this.adminService.resetPassword(resetPasswordDto);
   }
 
-
   @UseGuards(AuthGuard)
   @Post('logout')
-  @ApiOperation({ summary: 'Log out admin user', description: 'Invalidates the current session for the specified device' })
+  @ApiOperation({
+    summary: 'Log out admin user',
+    description: 'Invalidates the current session for the specified device',
+  })
   @ApiResponse({
     status: 200,
     description: 'Successful logout',
@@ -162,9 +172,9 @@ export class AdminController {
       example: {
         statusCode: 401,
         message: 'Invalid token payload: missing required fields',
-        error: 'Unauthorized'
-      }
-    }
+        error: 'Unauthorized',
+      },
+    },
   })
   async logout(@Headers('authorization') authHeader: string) {
     if (!authHeader) {
@@ -179,7 +189,6 @@ export class AdminController {
 
     return this.adminService.logout(token);
   }
-
 
   @Post('refresh-token')
   @ApiOperation({ summary: 'Refresh an access token using a refresh token' })
@@ -208,29 +217,23 @@ export class AdminController {
         data: {
           type: 'object',
           properties: {
-            accessToken: { type: 'string', example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' },
+            accessToken: {
+              type: 'string',
+              example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+            },
           },
         },
       },
     },
   })
   async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
-    try {
-
-      const result = await this.adminService.refreshToken(
-        refreshTokenDto
-      );
-
-      return {
-        success: true,
-        message: 'Token refreshed successfully',
-        data: result
-      };
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to refresh token');
-    }
+    const result = await this.adminService.refreshToken(refreshTokenDto);
+    return {
+      success: true,
+      message: 'Token refreshed successfully',
+      data: result,
+    };
   }
-
 
   @Post('validate-token')
   @ApiOperation({ summary: 'Validate an access token' })
@@ -267,21 +270,14 @@ export class AdminController {
     },
   })
   async validateToken(@Body() validateTokenDto: ValidateTokenDto) {
-    try {
+    const result = await this.adminService.validateToken(
+      validateTokenDto.accessToken,
+    );
 
-
-      const result = await this.adminService.validateToken(validateTokenDto.accessToken);
-
-      return {
-        success: true,
-        message: 'Token validation completed',
-        data: result
-      };
-    } catch (error) {
-      if (error.name === 'BadRequestException') {
-        throw error;
-      }
-      throw new InternalServerErrorException('Failed to validate token');
-    }
+    return {
+      success: true,
+      message: 'Token validation completed',
+      data: result,
+    };
   }
 }

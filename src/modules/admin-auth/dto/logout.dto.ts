@@ -5,5 +5,5 @@ export class LogoutDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  accessToken: string
+  accessToken: string;
 }

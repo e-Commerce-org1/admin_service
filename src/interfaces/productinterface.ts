@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 
 export interface Variant {
   size: string;
@@ -10,7 +10,7 @@ export interface CreateProductRequest {
   name: string;
   category: string;
   subCategory?: string;
-  gender?:string;
+  gender?: string;
   brand: string;
   imageUrl: string;
   description: string;

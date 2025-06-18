@@ -1,15 +1,16 @@
-import { Controller, Get, HttpStatus, Inject, LoggerService, Param, Put, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserService } from './user.service';
 
 class UserResponse {
-   users: UserResponse[];
-}
-
-class UserListResponse {
   users: UserResponse[];
-  total: number;
 }
 
 @ApiTags('Admin Users')
@@ -17,10 +18,7 @@ class UserListResponse {
 @UseGuards(AuthGuard)
 @Controller('admin/users')
 export class UserController {
-  constructor(
-    private readonly userAdminService: UserService
-  ) {}
-  
+  constructor(private readonly userAdminService: UserService) {}
 
   @Get(':id')
   @ApiOperation({ summary: 'Get user by ID' })
@@ -32,16 +30,22 @@ export class UserController {
     try {
       return await this.userAdminService.getUserById({ userId: id });
     } catch (error) {
-      throw new Error(`Failed to get user: ${error.message}`);
+      throw new Error(`Failed to get user: ${error}`);
     }
   }
 
   @Get()
-  async getAllUsers(@Query('page') page: number, @Query('limit') limit: number) {
+  async getAllUsers(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
     try {
-      return await this.userAdminService.getAllUsers({ page: page, limit: limit });
+      return await this.userAdminService.getAllUsers({
+        page: page,
+        limit: limit,
+      });
     } catch (error) {
-      throw new Error(`Failed to get all users: ${error.message}`);
+      throw new Error(`Failed to get all users: ${error}`);
     }
   }
 
@@ -49,12 +53,12 @@ export class UserController {
   async searchUsers(
     @Query('query') query: string,
     @Query('status') status: 'active' | 'inactive' | 'block',
-    @Query('limit') limit: number
+    @Query('limit') limit: number,
   ) {
     try {
       return await this.userAdminService.searchUsers({ query, status, limit });
     } catch (error) {
-      throw new Error(`Failed to search users: ${error.message}`);
+      throw new Error(`Failed to search users: ${error}`);
     }
   }
 
@@ -65,7 +69,7 @@ export class UserController {
         userId: id,
       });
     } catch (error) {
-      throw new Error(`Failed to block user: ${error.message}`);
+      throw new Error(`Failed to block user: ${error}`);
     }
   }
 
@@ -74,10 +78,7 @@ export class UserController {
     try {
       return await this.userAdminService.unblockUser({ userId: id });
     } catch (error) {
-      throw new Error(`Failed to unblock user: ${error.message}`);
+      throw new Error(`Failed to unblock user: ${error}`);
     }
   }
-
-
-
 }

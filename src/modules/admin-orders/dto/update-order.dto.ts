@@ -13,7 +13,6 @@ export enum OrderStatus {
 }
 
 export class UpdateOrderStatusDto {
-  
   @IsString()
   @IsNotEmpty()
   orderId: string;

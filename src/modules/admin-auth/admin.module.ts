@@ -12,23 +12,21 @@ import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forFeature([{
-      name: Admin.name,
-      schema: AdminSchema
-    }]),
+    MongooseModule.forFeature([
+      {
+        name: Admin.name,
+        schema: AdminSchema,
+      },
+    ]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'akshitbansal', 
+      secret: process.env.JWT_SECRET || 'akshitbansal',
       signOptions: { expiresIn: '15m' },
     }),
     AuthGrpcClientModule,
     RedisModule,
-
   ],
   controllers: [AdminController],
-  providers: [
-    AdminService,
-    JwtStrategy
-  ],
-  exports: [AdminService]
+  providers: [AdminService, JwtStrategy],
+  exports: [AdminService],
 })
-export class AdminModule { }
+export class AdminModule {}

@@ -11,9 +11,9 @@ import { OrderGrpcService } from './grpc.service';
         transport: Transport.GRPC,
         options: {
           package: 'order',
-          
+
           protoPath: join(__dirname, 'order.proto'),
-          url:'172.50.0.244:50053'
+          url: '172.50.0.244:50053',
         },
       },
     ]),

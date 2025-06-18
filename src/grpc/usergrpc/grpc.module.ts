@@ -10,7 +10,6 @@ import { UserAdminGrpcService } from './grpc.service';
         name: 'USER_ADMIN_GRPC_SERVICE',
         transport: Transport.GRPC,
         options: {
-          // url: '172.50.3.140:5051',
           url: '0.0.0.0:5051',
           package: 'useradmin',
           protoPath: join(__dirname, './user.proto'),
@@ -21,4 +20,4 @@ import { UserAdminGrpcService } from './grpc.service';
   providers: [UserAdminGrpcService],
   exports: [UserAdminGrpcService],
 })
-export class UserAdminGrpcModule { }
+export class UserAdminGrpcModule {}

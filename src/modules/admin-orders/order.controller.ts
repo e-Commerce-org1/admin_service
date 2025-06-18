@@ -1,19 +1,11 @@
 import { Controller, Post, Body, Get, Param, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { UpdateOrderStatusDto } from './dto/update-order.dto';
-import { PaymentSuccessDto } from './dto/paymemt-sucess.dto';
 import { RefundOrderDto } from './dto/refund.dto';
-// import { OrderService } from './order.service';
-// import { CreateOrderDto } from './dto/create-order.dto';
-// import { PaymentSuccessDto } from './dto/payment-success.dto';
-// import { RefundOrderDto } from './dto/refund-order.dto';
-// import { AddReviewDto } from './dto/add-review.dto';
-// import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 
 @Controller('admin/orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
-
 
   @Post('refund')
   async refundOrder(@Body() refundOrderDto: RefundOrderDto) {
@@ -26,24 +18,29 @@ export class OrderController {
   // }
 
   @Get('/:userId/:orderId')
-  async getOrderbyID( @Param('userId') userId: string,@Param('orderId') orderId: string){
-    return this.orderService.getOrderById({userId,orderId})
+  async getOrderbyID(
+    @Param('userId') userId: string,
+    @Param('orderId') orderId: string,
+  ) {
+    return this.orderService.getOrderById({ userId, orderId });
   }
 
   @Get(':orderId')
-  async getOrder(
-    @Param('orderId') orderId: string,
-  ) {
+  async getOrder(@Param('orderId') orderId: string) {
     return this.orderService.getOrderDetails({ orderId });
   }
 
   @Post('cancel')
-  async cancelOrder(@Body() cancelOrderDto: { orderId: string; userId: string }) {
+  async cancelOrder(
+    @Body() cancelOrderDto: { orderId: string; userId: string },
+  ) {
     return this.orderService.cancelOrder(cancelOrderDto);
   }
 
   @Post('exchange')
-  async exchangeOrder(@Body() exchangeOrderDto: { orderId: string; userId: string }) {
+  async exchangeOrder(
+    @Body() exchangeOrderDto: { orderId: string; userId: string },
+  ) {
     return this.orderService.exchangeOrder(exchangeOrderDto);
   }
 

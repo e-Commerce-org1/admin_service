@@ -2,7 +2,6 @@ import * as nodemailer from 'nodemailer';
 
 export const sendOtp = async (email: string, generateOtp: string) => {
   const transporter = nodemailer.createTransport({
-
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: false,
@@ -12,16 +11,12 @@ export const sendOtp = async (email: string, generateOtp: string) => {
     },
   });
 
-  console.log("email is being initiated");
+  console.log('email is being initiated');
   await transporter.sendMail({
-
-    from:  'mahi.rajput@appinventiv.com',
+    from: 'mahi.rajput@appinventiv.com',
     to: email,
     subject: 'Your OTP Code',
     text: `Your OTP code is ${generateOtp}. It is valid for 10 minutes.`,
-
   });
-  console.log("email is being sent ");
-
-}
-
+  console.log('email is being sent ');
+};
