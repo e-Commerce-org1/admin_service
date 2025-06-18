@@ -11,7 +11,6 @@ import {
   UpdateUserStatusResponse,
   SearchUsersRequest,
   SearchUsersResponse,
-  IUserAdminGrpcService,
   UnblockUserResponse,
   UnblockUserRequest,
 } from '../../interfaces/user.interface';
@@ -19,15 +18,15 @@ import {
 interface UserAdminGrpcClient {
   getAllUsers(request: GetAllUsersRequest): Promise<GetAllUsersResponse>;
   getUserById(request: GetUserByIdRequest): Promise<GetUserByIdResponse>;
-  updateUserStatus(request: UpdateUserStatusRequest): Promise<UpdateUserStatusResponse>;
+  updateUserStatus(
+    request: UpdateUserStatusRequest,
+  ): Promise<UpdateUserStatusResponse>;
   unblockUser(request: UnblockUserRequest): Promise<UnblockUserResponse>;
   searchUsers(request: SearchUsersRequest): Promise<SearchUsersResponse>;
 }
 
 @Injectable()
-export class UserAdminGrpcService
-  implements OnModuleInit
-{
+export class UserAdminGrpcService implements OnModuleInit {
   private userAdminGrpcClient: UserAdminGrpcClient;
 
   constructor(@Inject('USER_ADMIN_GRPC_SERVICE') private client: ClientGrpc) {}

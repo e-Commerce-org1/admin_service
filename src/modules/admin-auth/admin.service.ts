@@ -39,10 +39,8 @@ export class AdminService {
 
       const existingAdminCount = await this.adminModel.countDocuments();
       if (existingAdminCount > 0) {
-        this.logger.warn(`Admin already exists: ${email}`);
-        throw new ConflictException(
-          'Admin already exists. Only one admin is allowed.',
-        );
+        this.logger.warn(`Admin already exists`);
+        throw new ConflictException('Admin already exists. Only one admin is allowed');
       }
 
       const existingAdmin = await this.adminModel.findOne({ email });
@@ -69,11 +67,8 @@ export class AdminService {
           role: 'admin',
         },
       };
-    } catch (error: unknown) {
-      this.logger.error(
-        `Signup failed: ${signupAdminDto.email}`,
-        error instanceof Error ? error.stack : '',
-      );
+    } catch (error) {
+      this.logger.error(`Signup failed: ${signupAdminDto.email}`);
       if (error instanceof ConflictException) {
         throw error;
       }
@@ -81,6 +76,7 @@ export class AdminService {
     }
   }
 
+  
   async login(loginAdminDto: LoginAdminDto) {
     try {
       this.logger.log(`Login attempt: ${loginAdminDto.email}`);
@@ -115,11 +111,9 @@ export class AdminService {
         },
         tokens,
       };
-    } catch (error: unknown) {
-      this.logger.error(
-        `Login failed: ${loginAdminDto.email}`,
-        error instanceof Error ? error.stack : '',
-      );
+    } 
+    catch (error: unknown) {
+      this.logger.error(`Login failed: ${loginAdminDto.email}`);
       if (error instanceof UnauthorizedException) {
         throw error;
       }
@@ -144,20 +138,20 @@ export class AdminService {
       this.logger.debug(`OTP sent to: ${email}`);
 
       const resetToken = this.jwtService.sign({ email }, { expiresIn: '15m' });
-      return { message: 'OTP sent', resetToken };
-    } catch (error: unknown) {
-      this.logger.error(
-        `Forgot password failed: ${forgotPasswordDto.email}`,
-        error instanceof Error ? error.stack : '',
-      );
+      return { 
+        message: 'OTP sent', 
+        resetToken 
+      };
+    } 
+    catch (error) {
+      this.logger.error(`Forgot password failed`);
       if (error instanceof UnauthorizedException) {
         throw error;
       }
-      throw new InternalServerErrorException(
-        'Failed to process forgot password',
-      );
+      throw new InternalServerErrorException('Failed to process forgot password');
     }
   }
+
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
     try {
@@ -184,11 +178,8 @@ export class AdminService {
       this.logger.log(`Password reset successful for: ${email}`);
 
       return { message: 'Password successfully reset' };
-    } catch (error: unknown) {
-      this.logger.error(
-        'Password reset failed',
-        error instanceof Error ? error.stack : '',
-      );
+    } catch (error) {
+      this.logger.error('Password reset failed');
       if (error instanceof UnauthorizedException) {
         throw error;
       }
@@ -196,17 +187,15 @@ export class AdminService {
     }
   }
 
-  async changePassword(
-    admin: AdminDocument,
-    changePasswordDto: ChangePasswordDto,
-  ) {
+
+  async changePassword(admin: AdminDocument,changePasswordDto: ChangePasswordDto) {
     try {
       this.logger.log(`Password change for: ${admin.email}`);
       const { currentPassword, newPassword } = changePasswordDto;
 
       const passwordMatch = await verifyPassword(
         currentPassword,
-        admin.password,
+        admin.password
       );
       if (!passwordMatch) {
         this.logger.warn(`Incorrect current password for: ${admin.email}`);
@@ -218,11 +207,8 @@ export class AdminService {
       this.logger.log(`Password changed for: ${admin.email}`);
 
       return { message: 'Password changed successfully' };
-    } catch (error: unknown) {
-      this.logger.error(
-        `Password change failed for: ${admin.email}`,
-        error instanceof Error ? error.stack : '',
-      );
+    } catch (error) {
+      this.logger.error(`Password change failed`);
       if (error instanceof UnauthorizedException) {
         throw error;
       }
@@ -230,24 +216,26 @@ export class AdminService {
     }
   }
 
+
   async logout(accessToken: string) {
     try {
       this.logger.log('Logout request');
-      const result = await this.grpcClientService.logout({ accessToken });
+      const result = await this.grpcClientService.logout({ accessToken }).catch(err => {
+      this.logger.error('GRPC Logout error', err);
+      throw err;
+    });;
       this.logger.log(`Logout ${result.success ? 'successful' : 'failed'}`);
 
       return {
         success: result.success,
         message: result.success ? 'Logged out successfully' : 'Logout failed',
       };
-    } catch (error: unknown) {
-      this.logger.error(
-        'Logout failed',
-        error instanceof Error ? error.stack : '',
-      );
+    } catch (error) {
+      this.logger.error('Logout failed');
       throw new InternalServerErrorException('Failed to logout');
     }
   }
+
 
   async refreshToken(refreshTokenDto: RefreshTokenDto) {
     try {
@@ -258,13 +246,11 @@ export class AdminService {
       this.logger.log('Token refreshed successfully');
       return result;
     } catch (error: unknown) {
-      this.logger.error(
-        'Token refresh failed',
-        error instanceof Error ? error.stack : '',
-      );
+      this.logger.error('Token refresh failed');
       throw new InternalServerErrorException('Failed to refresh token');
     }
   }
+  
 
   async validateToken(accessToken: string) {
     try {
@@ -274,11 +260,8 @@ export class AdminService {
       });
       this.logger.debug(`Token validation result: ${result.isValid}`);
       return result;
-    } catch (error: unknown) {
-      this.logger.error(
-        'Token validation failed',
-        error instanceof Error ? error.stack : '',
-      );
+    } catch (error) {
+      this.logger.error('Token validation failed');
       throw new InternalServerErrorException('Token validation failed');
     }
   }

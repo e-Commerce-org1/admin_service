@@ -42,9 +42,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
     try {
       const ttl = parseInt(this.configService.get('REDIS_TTL') || '600');
-      await this.client.set(`otp:${email}`, otp, { EX: ttl }),
-        console.log(email, otp);
-      console.log('success');
+      await this.client.set(`otp:${email}`, otp, { EX: ttl });
       return true;
     } catch (error) {
       this.logger.error(`Error setting OTP for ${email}`, error);

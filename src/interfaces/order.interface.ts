@@ -8,7 +8,9 @@ export interface IOrderService {
   // exchangeOrder(request: ExchangeOrderRequest): Promise<ExchangeOrderResponse>;
   // addReview(request: AddReviewRequest): Promise<AddReviewResponse>;
   GetAllOrders(request: GetAllOrdersRequest): Promise<GetAllOrdersResponse>;
-  UpdateOrderStatus(request: UpdateOrderStatusRequest): Promise<UpdateOrderStatusResponse>;
+  UpdateOrderStatus(
+    request: UpdateOrderStatusRequest,
+  ): Promise<UpdateOrderStatusResponse>;
   // getOrderDetails(request: OrderRequest): Promise<OrderResponse>;
 }
 

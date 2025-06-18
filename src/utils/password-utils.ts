@@ -5,21 +5,21 @@ export const hashPassword = async (password: string): Promise<string> => {
     const result = await hash(password, 10);
     if (!result) {
       return result;
-    } else {
+    } 
+    else {
       throw new Error('Failed to hash password');
     }
-  } catch (error) {
-    throw new Error('Failed to hash password', error );
+  } 
+  catch (error) {
+    throw new Error('Failed to hash password', error);
   }
 };
 
-export const verifyPassword = async (
-  plainPassword: string,
-  hashedPassword: string,
-): Promise<boolean> => {
+export const verifyPassword = async (plainPassword: string, hashedPassword: string): Promise<boolean> => {
   try {
     return await compare(plainPassword, hashedPassword);
-  } catch (error) {
-    throw new Error('Failed to verify password',error);
+  } 
+  catch (error) {
+    throw new Error('Failed to verify password', error);
   }
 };

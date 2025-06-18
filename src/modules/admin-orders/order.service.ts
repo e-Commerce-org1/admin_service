@@ -7,7 +7,6 @@ import {
   GetAllOrdersResponse,
   UpdateOrderStatusRequest,
   UpdateOrderStatusResponse,
-  OrderRequest,
 } from '../../interfaces/order.interface';
 import { OrderGrpcService } from '../../grpc/ordergrpc/grpc.service';
 

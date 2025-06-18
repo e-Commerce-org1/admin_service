@@ -19,7 +19,6 @@ import { ProductServiceGrpc } from '../../interfaces/productinterface';
 import { GrpcClientService } from '../../grpc/authgrpc/auth.grpc-client';
 // import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
-
 @Injectable()
 export class ProductService {
   private readonly logger = new Logger(ProductService.name);
@@ -37,7 +36,6 @@ export class ProductService {
     this.logger.log('ProductService gRPC client initialized');
   }
 
-  
   async createProduct(dto: CreateProductDto): Promise<Response> {
     this.logger.log(`Creating product: ${dto.name}`);
     try {

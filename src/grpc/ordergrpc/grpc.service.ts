@@ -3,22 +3,12 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { from, lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
-  RefundOrderRequest,
-  RefundOrderResponse,
-  UserIdRequest,
-  OrdersResponse,
   GetOrderRequest,
   OrderResponse,
-  CancelOrderRequest,
-  CancelOrderResponse,
-  ExchangeOrderRequest,
-  ExchangeOrderResponse,
   GetAllOrdersRequest,
   GetAllOrdersResponse,
   UpdateOrderStatusRequest,
   UpdateOrderStatusResponse,
-  OrderRequest,
-  IOrderService as IOrderGrpcService,
 } from '../../interfaces/order.interface';
 
 interface OrderGrpcClient {
@@ -28,7 +18,9 @@ interface OrderGrpcClient {
   // cancelOrder(request: CancelOrderRequest): Promise<CancelOrderResponse>;
   // // exchangeOrder(request: ExchangeOrderRequest): Promise<ExchangeOrderResponse>;
   GetAllOrders(request: GetAllOrdersRequest): Promise<GetAllOrdersResponse>;
-  UpdateOrderStatus(request: UpdateOrderStatusRequest): Promise<UpdateOrderStatusResponse>;
+  UpdateOrderStatus(
+    request: UpdateOrderStatusRequest,
+  ): Promise<UpdateOrderStatusResponse>;
   // getOrderDetails(request: OrderRequest): Promise<OrderResponse>;
 }
 
@@ -36,13 +28,12 @@ interface OrderGrpcClient {
 export class OrderGrpcService implements OnModuleInit {
   private orderGrpcClient: OrderGrpcClient;
 
-  constructor(@Inject('ORDER_PACKAGE') private client: ClientGrpc) { }
+  constructor(@Inject('ORDER_PACKAGE') private client: ClientGrpc) {}
 
   onModuleInit() {
     this.orderGrpcClient =
       this.client.getService<OrderGrpcClient>('OrderService');
   }
-
 
   async getOrderById(data: GetOrderRequest): Promise<OrderResponse> {
     return await lastValueFrom(
@@ -78,12 +69,10 @@ export class OrderGrpcService implements OnModuleInit {
   //   );
   // }
 
-
-
   // In your OrderGrpcService
   async getAllOrders(data: GetAllOrdersRequest): Promise<GetAllOrdersResponse> {
     const response = await lastValueFrom(
-      from(this.orderGrpcClient.GetAllOrders(data))
+      from(this.orderGrpcClient.GetAllOrders(data)),
     );
 
     return {
@@ -94,8 +83,9 @@ export class OrderGrpcService implements OnModuleInit {
     };
   }
 
-
-  async updateOrderStatus(data: UpdateOrderStatusRequest): Promise<UpdateOrderStatusResponse> {
+  async updateOrderStatus(
+    data: UpdateOrderStatusRequest,
+  ): Promise<UpdateOrderStatusResponse> {
     return await lastValueFrom(
       from(this.orderGrpcClient.UpdateOrderStatus(data)).pipe(
         map((response) => response),
