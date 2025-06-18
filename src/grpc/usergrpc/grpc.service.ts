@@ -19,16 +19,14 @@ import {
 interface UserAdminGrpcClient {
   getAllUsers(request: GetAllUsersRequest): Promise<GetAllUsersResponse>;
   getUserById(request: GetUserByIdRequest): Promise<GetUserByIdResponse>;
-  updateUserStatus(
-    request: UpdateUserStatusRequest,
-  ): Promise<UpdateUserStatusResponse>;
+  updateUserStatus(request: UpdateUserStatusRequest): Promise<UpdateUserStatusResponse>;
   unblockUser(request: UnblockUserRequest): Promise<UnblockUserResponse>;
   searchUsers(request: SearchUsersRequest): Promise<SearchUsersResponse>;
 }
 
 @Injectable()
 export class UserAdminGrpcService
-  implements OnModuleInit, IUserAdminGrpcService
+  implements OnModuleInit
 {
   private userAdminGrpcClient: UserAdminGrpcClient;
 

@@ -1,17 +1,15 @@
 export interface IOrderService {
   // createOrder(request: CreateOrderRequest): Promise<CreateOrderResponse>;
   // handlePaymentSuccess(request: PaymentSuccessRequest): Promise<PaymentSuccessResponse>;
-  refundOrder(request: RefundOrderRequest): Promise<RefundOrderResponse>;
-  getAllOrdersByUser(request: UserIdRequest): Promise<OrdersResponse>;
-  getOrderById(request: GetOrderRequest): Promise<OrderResponse>;
-  cancelOrder(request: CancelOrderRequest): Promise<CancelOrderResponse>;
-  exchangeOrder(request: ExchangeOrderRequest): Promise<ExchangeOrderResponse>;
+  // refundOrder(request: RefundOrderRequest): Promise<RefundOrderResponse>;
+  // getAllOrdersByUser(request: UserIdRequest): Promise<OrdersResponse>;
+  GetOrderById(request: GetOrderRequest): Promise<OrderResponse>;
+  // cancelOrder(request: CancelOrderRequest): Promise<CancelOrderResponse>;
+  // exchangeOrder(request: ExchangeOrderRequest): Promise<ExchangeOrderResponse>;
   // addReview(request: AddReviewRequest): Promise<AddReviewResponse>;
-  getAllOrders(request: GetAllOrdersRequest): Promise<GetAllOrdersResponse>;
-  updateOrderStatus(
-    request: UpdateOrderStatusRequest,
-  ): Promise<UpdateOrderStatusResponse>;
-  getOrderDetails(request: OrderRequest): Promise<OrderResponse>;
+  GetAllOrders(request: GetAllOrdersRequest): Promise<GetAllOrdersResponse>;
+  UpdateOrderStatus(request: UpdateOrderStatusRequest): Promise<UpdateOrderStatusResponse>;
+  // getOrderDetails(request: OrderRequest): Promise<OrderResponse>;
 }
 
 export interface CreateOrderRequest {

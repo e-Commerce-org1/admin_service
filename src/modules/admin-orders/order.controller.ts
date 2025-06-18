@@ -7,10 +7,10 @@ import { RefundOrderDto } from './dto/refund.dto';
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  @Post('refund')
-  async refundOrder(@Body() refundOrderDto: RefundOrderDto) {
-    return this.orderService.refundOrder(refundOrderDto);
-  }
+  // @Post('refund')
+  // async refundOrder(@Body() refundOrderDto: RefundOrderDto) {
+  //   return this.orderService.refundOrder(refundOrderDto);
+  // }
 
   // @Get('user/:Id')
   // async getUserOrders(@Param('Id') userId: string) {
@@ -25,24 +25,24 @@ export class OrderController {
     return this.orderService.getOrderById({ userId, orderId });
   }
 
-  @Get(':orderId')
-  async getOrder(@Param('orderId') orderId: string) {
-    return this.orderService.getOrderDetails({ orderId });
-  }
+  // @Get(':orderId')
+  // async getOrder(@Param('orderId') orderId: string) {
+  //   return this.orderService.getOrderDetails({ orderId });
+  // }
 
-  @Post('cancel')
-  async cancelOrder(
-    @Body() cancelOrderDto: { orderId: string; userId: string },
-  ) {
-    return this.orderService.cancelOrder(cancelOrderDto);
-  }
+  // @Post('cancel')
+  // async cancelOrder(
+  //   @Body() cancelOrderDto: { orderId: string; userId: string },
+  // ) {
+  //   return this.orderService.cancelOrder(cancelOrderDto);
+  // }
 
-  @Post('exchange')
-  async exchangeOrder(
-    @Body() exchangeOrderDto: { orderId: string; userId: string },
-  ) {
-    return this.orderService.exchangeOrder(exchangeOrderDto);
-  }
+  // @Post('exchange')
+  // async exchangeOrder(
+  //   @Body() exchangeOrderDto: { orderId: string; userId: string },
+  // ) {
+  //   return this.orderService.exchangeOrder(exchangeOrderDto);
+  // }
 
   @Get()
   async getAllOrders(
