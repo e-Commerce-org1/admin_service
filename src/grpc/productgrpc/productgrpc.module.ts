@@ -1,7 +1,5 @@
-// app.module.ts or product.module.ts
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-// import { GrpcProductService } from './product.grpc-client';
 
 import { Module } from '@nestjs/common';
 import { GrpcProductService } from './product.grpc-client';

@@ -204,7 +204,6 @@ export class ProductService {
           }),
         ),
       );
-      // console.log(result)
       this.logger.debug(`Found ${result.data?.pageSize} products`);
       return result;
     } catch (error) {

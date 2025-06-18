@@ -1,7 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-// import { DashboardStats, ProductListResponse } from './dashboard.interface';
 import { ProductService } from 'src/modules/admin-product/product.service';
-// import { UserService } from 'src/adminAA/users/user.service';
 import {
   DashboardStats,
   ProductListResponse,

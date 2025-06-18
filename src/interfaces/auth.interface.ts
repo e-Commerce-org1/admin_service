@@ -54,7 +54,5 @@ export interface AuthService {
   getToken(request: LoginRequest): Observable<LoginResponse>;
   accessToken(request: AccessTokenRequest): Observable<AccessTokenResponse>;
   logout(request: LogoutRequest): Observable<LogoutResponse>;
-  validateToken(
-    request: ValidateTokenRequest,
-  ): Observable<ValidateTokenResponse>;
+  validateToken(request: ValidateTokenRequest): Observable<ValidateTokenResponse>;
 }

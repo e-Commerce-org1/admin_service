@@ -1,17 +1,7 @@
 export interface IOrderService {
-  // createOrder(request: CreateOrderRequest): Promise<CreateOrderResponse>;
-  // handlePaymentSuccess(request: PaymentSuccessRequest): Promise<PaymentSuccessResponse>;
-  // refundOrder(request: RefundOrderRequest): Promise<RefundOrderResponse>;
-  // getAllOrdersByUser(request: UserIdRequest): Promise<OrdersResponse>;
   GetOrderById(request: GetOrderRequest): Promise<OrderResponse>;
-  // cancelOrder(request: CancelOrderRequest): Promise<CancelOrderResponse>;
-  // exchangeOrder(request: ExchangeOrderRequest): Promise<ExchangeOrderResponse>;
-  // addReview(request: AddReviewRequest): Promise<AddReviewResponse>;
   GetAllOrders(request: GetAllOrdersRequest): Promise<GetAllOrdersResponse>;
-  UpdateOrderStatus(
-    request: UpdateOrderStatusRequest,
-  ): Promise<UpdateOrderStatusResponse>;
-  // getOrderDetails(request: OrderRequest): Promise<OrderResponse>;
+  UpdateOrderStatus(request: UpdateOrderStatusRequest): Promise<UpdateOrderStatusResponse>;
 }
 
 export interface CreateOrderRequest {

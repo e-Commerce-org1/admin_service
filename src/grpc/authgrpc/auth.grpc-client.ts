@@ -15,7 +15,7 @@ import {
 export class GrpcClientService implements OnModuleInit {
   private authService: AuthService;
 
-  constructor(@Inject('AUTH_PACKAGE') private readonly client: ClientGrpc) {}
+  constructor(@Inject('AUTH_PACKAGE') private readonly client: ClientGrpc) { }
 
   onModuleInit() {
     this.authService = this.client.getService<AuthService>('AuthService');

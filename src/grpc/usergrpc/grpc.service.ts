@@ -29,7 +29,7 @@ interface UserAdminGrpcClient {
 export class UserAdminGrpcService implements OnModuleInit {
   private userAdminGrpcClient: UserAdminGrpcClient;
 
-  constructor(@Inject('USER_ADMIN_GRPC_SERVICE') private client: ClientGrpc) {}
+  constructor(@Inject('USER_ADMIN_GRPC_SERVICE') private client: ClientGrpc) { }
 
   onModuleInit() {
     this.userAdminGrpcClient = this.client.getService<UserAdminGrpcClient>(
