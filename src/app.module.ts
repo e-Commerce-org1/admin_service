@@ -6,7 +6,6 @@ import { ProductGrpcClientModule } from './grpc/productgrpc/productgrpc.module';
 import { AdminModule } from './modules/admin-auth/admin.module';
 import { AuthGrpcClientModule } from './grpc/authgrpc/auth.module';
 import { OrderModule } from './modules/admin-orders/order.module';
-import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { UserModule } from './modules/admin-users/user.module';
 import { DashboardModule } from './modules/admin-dashboard/dashboard.module';
 
@@ -16,7 +15,6 @@ import { DashboardModule } from './modules/admin-dashboard/dashboard.module';
       isGlobal: true,
       envFilePath: ['.env'],
     }),
-    CloudinaryModule,
     MongooseModule.forRoot(process.env.MONGO_URI as string),
     AdminModule,
     DashboardModule,

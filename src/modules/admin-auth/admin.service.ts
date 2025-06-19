@@ -30,7 +30,7 @@ export class AdminService {
     private readonly grpcClientService: GrpcClientService,
     private readonly redisService: RedisService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signup(signupAdminDto: SignupAdminDto) {
     try {
@@ -40,7 +40,9 @@ export class AdminService {
       const existingAdminCount = await this.adminModel.countDocuments();
       if (existingAdminCount > 0) {
         this.logger.warn(`Admin already exists`);
-        throw new ConflictException('Admin already exists. Only one admin is allowed');
+        throw new ConflictException(
+          'Admin already exists. Only one admin is allowed',
+        );
       }
 
       const existingAdmin = await this.adminModel.findOne({ email });
@@ -77,6 +79,7 @@ export class AdminService {
   }
 
   
+
   async login(loginAdminDto: LoginAdminDto) {
     try {
       this.logger.log(`Login attempt: ${loginAdminDto.email}`);
@@ -111,8 +114,7 @@ export class AdminService {
         },
         tokens,
       };
-    } 
-    catch (error: unknown) {
+    } catch (error: unknown) {
       this.logger.error(`Login failed: ${loginAdminDto.email}`);
       if (error instanceof UnauthorizedException) {
         throw error;
@@ -138,20 +140,20 @@ export class AdminService {
       this.logger.debug(`OTP sent to: ${email}`);
 
       const resetToken = this.jwtService.sign({ email }, { expiresIn: '15m' });
-      return { 
-        message: 'OTP sent', 
-        resetToken 
+      return {
+        message: 'OTP sent',
+        resetToken,
       };
-    } 
-    catch (error) {
+    } catch (error) {
       this.logger.error(`Forgot password failed`);
       if (error instanceof UnauthorizedException) {
         throw error;
       }
-      throw new InternalServerErrorException('Failed to process forgot password');
+      throw new InternalServerErrorException(
+        'Failed to process forgot password',
+      );
     }
   }
-
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
     try {
@@ -187,15 +189,17 @@ export class AdminService {
     }
   }
 
-
-  async changePassword(admin: AdminDocument,changePasswordDto: ChangePasswordDto) {
+  async changePassword(
+    admin: AdminDocument,
+    changePasswordDto: ChangePasswordDto,
+  ) {
     try {
       this.logger.log(`Password change for: ${admin.email}`);
       const { currentPassword, newPassword } = changePasswordDto;
 
       const passwordMatch = await verifyPassword(
         currentPassword,
-        admin.password
+        admin.password,
       );
       if (!passwordMatch) {
         this.logger.warn(`Incorrect current password for: ${admin.email}`);
@@ -216,26 +220,31 @@ export class AdminService {
     }
   }
 
-
   async logout(accessToken: string) {
     try {
       this.logger.log('Logout request');
-      const result = await this.grpcClientService.logout({ accessToken }).catch(err => {
-      this.logger.error('GRPC Logout error', err);
-      throw err;
-    });;
-      this.logger.log(`Logout ${result.success ? 'successful' : 'failed'}`);
+      console.log('servicetoken', accessToken);
+      const result = await this.grpcClientService
+        .logout({ accessToken })
+      // .catch((err) => {
+      //   this.logger.error('GRPC Logout error', err);
+      //   throw err;
+      // });
+      console.log("resultfghhhj", result)
 
-      return {
-        success: result.success,
-        message: result.success ? 'Logged out successfully' : 'Logout failed',
-      };
+      this.logger.log(`Logout ${result.success ? 'successful' : 'failed'}`);
+      //  console.log("qwertyuiop")
+      // return {
+      //   success: result.success,
+      //   message: result.success ? 'Logged out successfully' : 'Logout failed',
+      // };
+      console.log(result)
+      return result
     } catch (error) {
       this.logger.error('Logout failed');
-      throw new InternalServerErrorException('Failed to logout');
+      throw new InternalServerErrorException('Failed to logout', error);
     }
   }
-
 
   async refreshToken(refreshTokenDto: RefreshTokenDto) {
     try {
@@ -245,12 +254,11 @@ export class AdminService {
       });
       this.logger.log('Token refreshed successfully');
       return result;
-    } catch (error: unknown) {
+    } catch (error) {
       this.logger.error('Token refresh failed');
-      throw new InternalServerErrorException('Failed to refresh token');
+      throw new InternalServerErrorException('Failed to refresh token', error);
     }
   }
-  
 
   async validateToken(accessToken: string) {
     try {
@@ -262,7 +270,7 @@ export class AdminService {
       return result;
     } catch (error) {
       this.logger.error('Token validation failed');
-      throw new InternalServerErrorException('Token validation failed');
+      throw new InternalServerErrorException('Token validation failed', error);
     }
   }
 }

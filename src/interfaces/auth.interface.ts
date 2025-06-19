@@ -4,7 +4,6 @@ export class LoginResponses {
   admin: {
     email: string;
     deviceId?: string;
-    role: string;
     entityId: string;
   };
   tokens: {

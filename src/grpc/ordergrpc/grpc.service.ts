@@ -14,7 +14,9 @@ import {
 interface OrderGrpcClient {
   GetOrderById(request: GetOrderRequest): Promise<OrderResponse>;
   GetAllOrders(request: GetAllOrdersRequest): Promise<GetAllOrdersResponse>;
-  UpdateOrderStatus(request: UpdateOrderStatusRequest): Promise<UpdateOrderStatusResponse>;
+  UpdateOrderStatus(
+    request: UpdateOrderStatusRequest,
+  ): Promise<UpdateOrderStatusResponse>;
 }
 
 @Injectable()

@@ -1,4 +1,3 @@
-// src/grpc/product/product-grpc.service.ts
 import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { ProductServiceGrpc } from '../../interfaces/productinterface';

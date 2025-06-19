@@ -51,8 +51,6 @@ export interface UnblockUserResponse {
 
 export interface SearchUsersRequest {
   query: string;
-  status: string;
-  limit: number;
 }
 
 export interface SearchUsersResponse {

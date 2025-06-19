@@ -5,7 +5,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
-  UnauthorizedException,
+  Request,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { LoginAdminDto } from './dto/login-admin.dto';
@@ -34,18 +34,6 @@ import { LoginResponseDto } from './dto/login-response.dto';
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
-
-  @Post('signup')
-  async signup(@Body() signupAdminDto: SignupAdminDto) {
-    const result = await this.adminService.signup(signupAdminDto);
-    return {
-      success: true,
-      message: 'Admin registered successfully',
-      data: result,
-    };
-  }
-
-  
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -178,18 +166,19 @@ export class AdminController {
       },
     },
   })
-  async logout(@Headers('authorization') authHeader: string) {
-    if (!authHeader) {
-      throw new UnauthorizedException('Authorization header is required');
-    }
-
-    const token = authHeader?.split(' ')[1];
-
-    if (!token) {
-      throw new UnauthorizedException('Invalid Bearer token format');
-    }
-
-    return this.adminService.logout(token);
+  async logout(@Request() req) {
+    // if (!authHeader) {
+    //   throw new UnauthorizedException('Authorization header is required');
+    // }
+    // const token = authHeader?.split(' ')[1];
+    // if (!token) {
+    //   throw new UnauthorizedException('Invalid Bearer token format');
+    // }
+    // return this.adminService.logout(token);
+    const authHeader = req.headers.authorization;
+    const accessToken = authHeader?.replace('Bearer ', '');
+    const result = await this.adminService.logout(accessToken);
+    return result;
   }
 
   @Post('refresh-token')

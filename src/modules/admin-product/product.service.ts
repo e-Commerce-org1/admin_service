@@ -17,7 +17,6 @@ import {
 } from '../../interfaces/productinterface';
 import { ProductServiceGrpc } from '../../interfaces/productinterface';
 import { GrpcClientService } from '../../grpc/authgrpc/auth.grpc-client';
-// import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class ProductService {
@@ -27,7 +26,6 @@ export class ProductService {
   constructor(
     @Inject('PRODUCT_PACKAGE') private client: ClientGrpc,
     private readonly grpcClientService: GrpcClientService,
-    // private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   onModuleInit() {

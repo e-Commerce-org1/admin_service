@@ -39,9 +39,7 @@ export class DashboardController {
   async getDashboardStats(): Promise<DashboardStats> {
     try {
       this.logger.log('Fetching dashboard statistics...');
-
       const stats = await this.dashboardService.getDashboardStats();
-
       this.logger.log('Successfully fetched dashboard statistics');
       return stats;
     } catch (error) {

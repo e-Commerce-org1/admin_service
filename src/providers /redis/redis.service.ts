@@ -25,8 +25,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
       await this.client.connect();
       this.logger.log('Redis connected successfully');
-    } 
-    catch (error) {
+    } catch (error) {
       this.logger.error('Failed to connect to Redis', error);
       throw error;
     }
@@ -44,8 +43,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       const ttl = parseInt(this.configService.get('REDIS_TTL') || '600');
       await this.client.set(`otp:${email}`, otp, { EX: ttl });
       return true;
-    } 
-    catch (error) {
+    } catch (error) {
       this.logger.error(`Error setting OTP for ${email}`, error);
       return false;
     }
@@ -54,8 +52,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   async getOtp(email: string): Promise<string | null> {
     try {
       return await this.client.get(`otp:${email}`);
-    } 
-    catch (error) {
+    } catch (error) {
       this.logger.error(`Error getting OTP for ${email}`, error);
       return null;
     }
@@ -65,11 +62,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     try {
       await this.client.del(email);
       return true;
-    } 
-    catch (error) {
+    } catch (error) {
       this.logger.error(`Error deleting OTP for ${email}`, error);
       return false;
     }
-
   }
 }
