@@ -5,7 +5,6 @@ import { ProductModule } from './modules/admin-product/product.module';
 import { ProductGrpcClientModule } from './grpc/productgrpc/productgrpc.module';
 import { AdminModule } from './modules/admin-auth/admin.module';
 import { AuthGrpcClientModule } from './grpc/authgrpc/auth.module';
-import { OrderModule } from './modules/admin-orders/order.module';
 import { UserModule } from './modules/admin-users/user.module';
 import { DashboardModule } from './modules/admin-dashboard/dashboard.module';
 
@@ -22,7 +21,7 @@ import { DashboardModule } from './modules/admin-dashboard/dashboard.module';
     ProductModule,
     AuthGrpcClientModule,
     ProductGrpcClientModule,
-    OrderModule,
+    // OrderModule,
   ],
 })
 export class AppModule {}

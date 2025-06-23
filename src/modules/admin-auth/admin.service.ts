@@ -20,7 +20,6 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { JwtService } from '@nestjs/jwt';
 import { sendOtp } from 'src/providers /email /email.service';
 import { RedisService } from 'src/providers /redis/redis.service';
-
 @Injectable()
 export class AdminService {
   private readonly logger = new Logger(AdminService.name);
@@ -78,7 +77,7 @@ export class AdminService {
     }
   }
 
-  
+
 
   async login(loginAdminDto: LoginAdminDto) {
     try {
@@ -137,6 +136,7 @@ export class AdminService {
       const otp = generateOtp();
       await this.redisService.setOtp(email, otp);
       await sendOtp(email, otp);
+      console.log('bxwqubxolq')
       this.logger.debug(`OTP sent to: ${email}`);
 
       const resetToken = this.jwtService.sign({ email }, { expiresIn: '15m' });
@@ -172,28 +172,28 @@ export class AdminService {
         this.logger.warn(`Invalid OTP for: ${email}`);
         throw new UnauthorizedException('Invalid or expired OTP');
       }
-
       const hashedPassword = await hashPassword(newPassword);
-      await this.adminModel.updateOne({ email }, { password: hashedPassword });
-
+      const res = await this.adminModel.updateOne({ email }, { password: hashedPassword });
       await this.redisService.deleteOtp(email);
       this.logger.log(`Password reset successful for: ${email}`);
 
       return { message: 'Password successfully reset' };
     } catch (error) {
       this.logger.error('Password reset failed');
-      if (error instanceof UnauthorizedException) {
-        throw error;
-      }
       throw new InternalServerErrorException('Failed to reset password');
     }
   }
 
   async changePassword(
-    admin: AdminDocument,
+    adminPartial: any,
     changePasswordDto: ChangePasswordDto,
   ) {
     try {
+      console.log('Stored hashed password:');
+      const admin = await this.adminModel.findById(adminPartial.entityId)
+                    .select('+password +email')
+                    .exec();
+  if (!admin) throw new UnauthorizedException('Admin not found');
       this.logger.log(`Password change for: ${admin.email}`);
       const { currentPassword, newPassword } = changePasswordDto;
 
@@ -212,7 +212,7 @@ export class AdminService {
 
       return { message: 'Password changed successfully' };
     } catch (error) {
-      this.logger.error(`Password change failed`);
+      this.logger.error(`Password change failed`,error.stack);
       if (error instanceof UnauthorizedException) {
         throw error;
       }
@@ -223,22 +223,10 @@ export class AdminService {
   async logout(accessToken: string) {
     try {
       this.logger.log('Logout request');
-      console.log('servicetoken', accessToken);
       const result = await this.grpcClientService
         .logout({ accessToken })
-      // .catch((err) => {
-      //   this.logger.error('GRPC Logout error', err);
-      //   throw err;
-      // });
-      console.log("resultfghhhj", result)
 
       this.logger.log(`Logout ${result.success ? 'successful' : 'failed'}`);
-      //  console.log("qwertyuiop")
-      // return {
-      //   success: result.success,
-      //   message: result.success ? 'Logged out successfully' : 'Logout failed',
-      // };
-      console.log(result)
       return result
     } catch (error) {
       this.logger.error('Logout failed');

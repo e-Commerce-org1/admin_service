@@ -20,11 +20,7 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      let c=0;
-      c=c++;
-      console.log('guard token',c, token);
       const { isValid } = await this.adminService.validateToken(token);
-      console.log('isvalidghjuygvvb');
       return isValid;
     } catch (error) {
       throw new UnauthorizedException('Invalid token', error);

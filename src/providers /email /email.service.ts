@@ -6,17 +6,14 @@ export const sendOtp = async (email: string, generateOtp: string) => {
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: false,
     auth: {
-      user: process.env.SMTP_USER || 'mahi.rajput@appinventiv.com',
-      pass: process.env.SMTP_PASS || 'acea sbch ojje ennw',
+      user: process.env.SMTP_USER || 'bansalakshit0460@gmail.com',
+      pass: process.env.SMTP_PASS || 'hidn dkcr eytc szap',
     },
   });
-
-  console.log('email is being initiated');
   await transporter.sendMail({
-    from: 'mahi.rajput@appinventiv.com',
+    from: 'bansalakshit0460@gmail.com',
     to: email,
     subject: 'Your OTP Code',
     text: `Your OTP code is ${generateOtp}. It is valid for 10 minutes.`,
   });
-  console.log('email is being sent ');
 };

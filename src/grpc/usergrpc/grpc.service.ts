@@ -21,6 +21,7 @@ interface UserAdminGrpcClient {
   updateUserStatus(request: UpdateUserStatusRequest): Promise<UpdateUserStatusResponse>;
   unblockUser(request: UnblockUserRequest): Promise<UnblockUserResponse>;
   searchUsers(request: SearchUsersRequest): Promise<SearchUsersResponse>;
+  getAll(request:GetAllUsersWithoutPaginationRequest):Promise<GetAllUsersWithoutPaginationResponse>
 }
 
 @Injectable()

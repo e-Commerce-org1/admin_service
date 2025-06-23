@@ -14,8 +14,8 @@ import {
   Response,
   UpdateInventoryRequest,
   ProductFilter,
+  ProductServiceGrpc,
 } from '../../interfaces/productinterface';
-import { ProductServiceGrpc } from '../../interfaces/productinterface';
 import { GrpcClientService } from '../../grpc/authgrpc/auth.grpc-client';
 
 @Injectable()
@@ -48,7 +48,7 @@ export class ProductService {
         subCategory: dto.subCategory || undefined,
         gender: dto.gender || undefined,
         brand: dto.brand,
-        imageUrl: dto.imageUrl,
+        images: dto.images||[],
         description: dto.description,
         price: dto.price,
         totalStock: totalStock,
@@ -106,8 +106,8 @@ export class ProductService {
     try {
       const totalStock =
         dto.variants?.reduce((sum, v) => sum + (v.stock || 0), 0) || 0;
-      const payload = { id, ...dto, totalStock };
-
+      // const payload = { ...dto,id, totalStock, imageUrl: dto.imageUrl || []};
+const payload = { ...dto, id, totalStock, imageUrl: Array.isArray(dto.images) ? JSON.stringify(dto.images) : dto.images || '' };
       this.logger.debug(`Product update payload: ${JSON.stringify(payload)}`);
 
       const result = await lastValueFrom(
@@ -119,7 +119,8 @@ export class ProductService {
                 typeof response.data === 'string'
                   ? JSON.parse(response.data)
                   : response.data;
-            } catch (parseError) {
+            } 
+            catch (parseError) {
               this.logger.error('Failed to parse response data', parseError);
               parsedData = response.data;
             }

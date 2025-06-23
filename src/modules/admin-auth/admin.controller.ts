@@ -5,13 +5,12 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
-  Request,
+  Request
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
-import { SignupAdminDto } from './dto/signup-admin.dto';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -26,8 +25,8 @@ import { AdminDocument } from '../../schema/admin.schema';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { ValidateTokenDto } from './dto/validate-token.dto';
 import { AuthGuard } from '../../guards/auth.guard';
-import { Headers } from '@nestjs/common';
 import { LoginResponseDto } from './dto/login-response.dto';
+
 
 @ApiTags('Admin - Login Management')
 @ApiBearerAuth()
@@ -100,6 +99,7 @@ export class AdminController {
     admin: AdminDocument,
     @Body() changePasswordDto: ChangePasswordDto,
   ) {
+    console.log(admin)
     const result = await this.adminService.changePassword(
       admin,
       changePasswordDto,

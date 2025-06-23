@@ -6,9 +6,19 @@ import {
   ValidateNested,
   Min,
   ArrayNotEmpty,
+  IsBoolean,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+class ProductImageDto {
+  @ApiProperty()
+  @IsString()
+  url: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  isPrimary: boolean;
+}
 
 class VariantDto {
   @ApiProperty()
@@ -47,9 +57,16 @@ export class CreateProductDto {
   @IsString()
   brand: string;
 
-  @ApiProperty()
-  @IsString()
-  imageUrl: string;
+  // @ApiProperty()
+  // @IsString()
+  // imageUrl: string;
+
+  @ApiProperty({ type: [ProductImageDto] })
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => ProductImageDto)
+  images: ProductImageDto[];
 
   @ApiProperty()
   @IsString()

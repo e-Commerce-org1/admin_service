@@ -9,6 +9,7 @@ service ProductService {
   rpc ListProducts (ProductFilter) returns (Response);
   rpc DeleteProduct (ProductID) returns (Response);
   rpc UpdateInventory (UpdateInventoryRequest) returns (Response);
+  rpc UpdateInventoryByOrder (UpdateInventoryByOrderRequest) returns (Response);
 }
 
 message Response {
@@ -19,13 +20,18 @@ message Response {
   string error = 5;
 }
 
+message ProductImage {
+  string url = 1;
+  bool isPrimary = 2; 
+}
+
 message CreateProductRequest {
   string name = 1;
   string category = 2;
   optional string subCategory = 3;
   optional string gender = 4;
   string brand = 5;
-  string imageUrl = 6;
+  repeated ProductImage images = 6;
   string description = 7;
   double price = 8;
   int32 totalStock = 9;
@@ -39,7 +45,7 @@ message UpdateProductRequest {
   optional string subCategory = 4;
   optional string gender = 5;
   optional string brand = 6;
-  optional string imageUrl = 7;
+  repeated ProductImage images = 7;
   optional string description = 8;
   optional double price = 9;
   repeated Variant variants = 10;
@@ -68,4 +74,16 @@ message ProductFilter {
 message UpdateInventoryRequest {
   string productId = 1;
   repeated Variant variants = 2;
+}
+
+message UpdateInventoryByOrderRequest {
+  repeated InventoryChange items = 1;
+}
+
+message InventoryChange {
+  string productId = 1;
+  string size = 2;
+  string color = 3;
+  int32 quantity = 4;
+  bool increase = 5;
 }

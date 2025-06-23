@@ -4,7 +4,11 @@ export interface IUserAdminGrpcService {
   updateUserStatus(request: UpdateUserStatusRequest): Promise<UpdateUserStatusResponse>;
   unblockUser(request: UnblockUserRequest): Promise<UnblockUserResponse>;
   searchUsers(request: SearchUsersRequest): Promise<SearchUsersResponse>;
+
 }
+
+export interface GetAllUsersWithoutPaginationRequest{}
+
 
 export interface GetAllUsersRequest {
   page: number;
